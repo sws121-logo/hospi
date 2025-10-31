@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - SmileBright Dental</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --secondary: #8b5cf6;
+            --accent: #06b6d4;
+            --light: #f0f9ff;
+            --dark: #1e3a8a;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .admin-sidebar {
+            background: linear-gradient(180deg, var(--dark), var(--primary));
+            color: white;
+            min-height: 100vh;
+            box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-content {
+            padding: 20px;
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border-left: 5px solid var(--primary);
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-glow {
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            border: none;
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-glow:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Admin Panel -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 admin-sidebar">
+                <div class="d-flex align-items-center justify-content-between p-3 border-bottom">
+                    <h3 class="mb-0">Admin Panel</h3>
+                    <button class="btn btn-sm btn-light" id="logout-btn">Logout</button>
+                </div>
+                <ul class="nav flex-column mt-3">
+                    <li class="nav-item">
+                        <a class="nav-link text-white active" href="#" data-tab="dashboard">
+                            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#" data-tab="appointments-management">
+                            <i class="fas fa-calendar-check me-2"></i> Appointments
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#" data-tab="patients-management">
+                            <i class="fas fa-user-injured me-2"></i> Patients
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#" data-tab="staff-management">
+                            <i class="fas fa-user-md me-2"></i> Staff
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#" data-tab="services-management">
+                            <i class="fas fa-teeth me-2"></i> Services
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-9 admin-content">
+                <!-- Dashboard -->
+                <div id="dashboard" class="admin-tab">
+                    <h2>Dashboard</h2>
+                    <div class="row">
+                        <div class="col-md-3 mb-4">
+                            <div class="stats-card p-3">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h5 class="text-muted">Total Appointments</h5>
+                                        <h3 id="total-appointments-count">0</h3>
+                                    </div>
+                                    <div class="align-self-center">
+                                        <i class="fas fa-calendar-check text-primary fa-2x"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-4">
+                            <div class="stats-card p-3">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h5 class="text-muted">Total Patients</h5>
+                                        <h3 id="total-patients-count">0</h3>
+                                    </div>
+                                    <div class="align-self-center">
+                                        <i class="fas fa-user-injured text-primary fa-2x"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-4">
+                            <div class="stats-card p-3">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h5 class="text-muted">Today's Appointments</h5>
+                                        <h3 id="today-appointments-count">0</h3>
+                                    </div>
+                                    <div class="align-self-center">
+                                        <i class="fas fa-calendar-day text-primary fa-2x"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-4">
+                            <div class="stats-card p-3">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h5 class="text-muted">Revenue</h5>
+                                        <h3 id="revenue-count">₹0</h3>
+                                    </div>
+                                    <div class="align-self-center">
+                                        <i class="fas fa-rupee-sign text-primary fa-2x"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="mb-0">Recent Appointments</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Service</th>
+                                                    <th>Date</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="recent-appointments">
+                                                <!-- Recent appointments will be loaded here -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="mb-0">Quick Actions</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-glow" data-tab="appointments-management">Manage
+                                            Appointments</button>
+                                        <button class="btn btn-glow" data-tab="patients-management">View
+                                            Patients</button>
+                                        <button class="btn btn-glow" data-tab="staff-management">Manage
+                                            Staff</button>
+                                        <button class="btn btn-glow" data-tab="services-management">Manage
+                                            Services</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Appointments Management -->
+                <div id="appointments-management" class="admin-tab" style="display: none;">
+                    <h2>Appointments Management</h2>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Patient Name</th>
+                                    <th>Service</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="appointments-table">
+                                <!-- Appointments data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Patients Management -->
+                <div id="patients-management" class="admin-tab" style="display: none;">
+                    <h2>Patients Management</h2>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Last Visit</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="patients-table">
+                                <!-- Patients data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Staff Management -->
+                <div id="staff-management" class="admin-tab" style="display: none;">
+                    <h2>Staff Management</h2>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="staff-table">
+                                <!-- Staff data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Services Management -->
+                <div id="services-management" class="admin-tab" style="display: none;">
+                    <h2>Services Management</h2>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Service Name</th>
+                                    <th>Description</th>
+                                    <th>Price</th>
+                                    <th>Duration</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="services-table">
+                                <!-- Services data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notification-container"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Load data from localStorage
+        let data = JSON.parse(localStorage.getItem('dentalHospitalData')) || {
+            appointments: [],
+            patients: [],
+            staff: [],
+            services: []
+        };
+
+        // Update dashboard counts
+        function updateDashboardCounts() {
+            document.getElementById('total-appointments-count').textContent = data.appointments.length;
+            document.getElementById('total-patients-count').textContent = data.patients.length;
+
+            // Calculate today's appointments
+            const today = new Date().toISOString().split('T')[0];
+            const todayAppointments = data.appointments.filter(apt => apt.date === today);
+            document.getElementById('today-appointments-count').textContent = todayAppointments.length;
+
+            // Calculate revenue (simplified)
+            const revenue = data.appointments.length * 1000;
+            document.getElementById('revenue-count').textContent = `₹${revenue}`;
+        }
+
+        // Render appointments
+        function renderAppointments() {
+            const tableBody = document.getElementById('appointments-table');
+            if (tableBody) {
+                tableBody.innerHTML = '';
+
+                data.appointments.forEach(appointment => {
+                    const tableRow = document.createElement('tr');
+                    tableRow.innerHTML = `
+                        <td>${appointment.id}</td>
+                        <td>${appointment.name}</td>
+                        <td>${appointment.service}</td>
+                        <td>${appointment.date}</td>
+                        <td>10:00 AM</td>
+                        <td><span class="badge bg-primary">Scheduled</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-success me-1">Confirm</button>
+                            <button class="btn btn-sm btn-warning me-1">Reschedule</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteAppointment(${appointment.id})">Cancel</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(tableRow);
+                });
+            }
+        }
+
+        // Render patients
+        function renderPatients() {
+            const tableBody = document.getElementById('patients-table');
+            if (tableBody) {
+                tableBody.innerHTML = '';
+
+                data.patients.forEach(patient => {
+                    const tableRow = document.createElement('tr');
+                    tableRow.innerHTML = `
+                        <td>${patient.id}</td>
+                        <td>${patient.name}</td>
+                        <td>${patient.email}</td>
+                        <td>${patient.phone}</td>
+                        <td>${patient.lastVisit || 'N/A'}</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary me-1">View</button>
+                            <button class="btn btn-sm btn-warning me-1">Edit</button>
+                            <button class="btn btn-sm btn-danger" onclick="deletePatient(${patient.id})">Delete</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(tableRow);
+                });
+            }
+        }
+
+        // Render staff
+        function renderStaff() {
+            const tableBody = document.getElementById('staff-table');
+            if (tableBody) {
+                tableBody.innerHTML = '';
+
+                data.staff.forEach(staff => {
+                    const tableRow = document.createElement('tr');
+                    tableRow.innerHTML = `
+                        <td>${staff.id}</td>
+                        <td>${staff.name}</td>
+                        <td>${staff.role}</td>
+                        <td>${staff.email}</td>
+                        <td>${staff.phone}</td>
+                        <td><span class="badge bg-success">${staff.status}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-primary me-1">View</button>
+                            <button class="btn btn-sm btn-warning me-1">Edit</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteStaff(${staff.id})">Delete</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(tableRow);
+                });
+            }
+        }
+
+        // Render services
+        function renderServices() {
+            const tableBody = document.getElementById('services-table');
+            if (tableBody) {
+                tableBody.innerHTML = '';
+
+                data.services.forEach(service => {
+                    const tableRow = document.createElement('tr');
+                    tableRow.innerHTML = `
+                        <td>${service.id}</td>
+                        <td>${service.name}</td>
+                        <td>${service.description}</td>
+                        <td>${service.price}</td>
+                        <td>${service.duration}</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary me-1">View</button>
+                            <button class="btn btn-sm btn-warning me-1">Edit</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteService(${service.id})">Delete</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(tableRow);
+                });
+            }
+        }
+
+        // Render recent appointments for dashboard
+        function renderRecentAppointments() {
+            const container = document.getElementById('recent-appointments');
+            if (container) {
+                container.innerHTML = '';
+
+                // Show only the 5 most recent appointments
+                const recentAppointments = data.appointments.slice(-5).reverse();
+
+                recentAppointments.forEach(appointment => {
+                    const tableRow = document.createElement('tr');
+                    tableRow.innerHTML = `
+                        <td>${appointment.name}</td>
+                        <td>${appointment.service}</td>
+                        <td>${appointment.date}</td>
+                        <td><span class="badge bg-primary">Scheduled</span></td>
+                    `;
+                    container.appendChild(tableRow);
+                });
+
+                if (recentAppointments.length === 0) {
+                    container.innerHTML = '<tr><td colspan="4" class="text-center">No recent appointments</td></tr>';
+                }
+            }
+        }
+
+        // Admin panel navigation
+        document.querySelectorAll('.admin-sidebar .nav-link').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                // Update active link
+                document.querySelectorAll('.admin-sidebar .nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+
+                // Show selected tab
+                const tabId = this.getAttribute('data-tab');
+                document.querySelectorAll('.admin-tab').forEach(tab => {
+                    tab.style.display = 'none';
+                });
+                document.getElementById(tabId).style.display = 'block';
+            });
+        });
+
+        // Quick action buttons
+        document.querySelectorAll('.btn-glow[data-tab]').forEach(button => {
+            button.addEventListener('click', function () {
+                const tabId = this.getAttribute('data-tab');
+
+                // Update active link
+                document.querySelectorAll('.admin-sidebar .nav-link').forEach(l => l.classList.remove('active'));
+                document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+
+                // Show selected tab
+                document.querySelectorAll('.admin-tab').forEach(tab => {
+                    tab.style.display = 'none';
+                });
+                document.getElementById(tabId).style.display = 'block';
+            });
+        });
+
+        // Logout button
+        document.getElementById('logout-btn').addEventListener('click', function (e) {
+            if (confirm('Are you sure you want to logout?')) {
+                window.close();
+            }
+        });
+
+        // Delete functions
+        function deleteAppointment(id) {
+            if (confirm('Are you sure you want to delete this appointment?')) {
+                data.appointments = data.appointments.filter(appointment => appointment.id !== id);
+                localStorage.setItem('dentalHospitalData', JSON.stringify(data));
+                renderAppointments();
+                updateDashboardCounts();
+                renderRecentAppointments();
+                showNotification('Appointment deleted successfully!', 'success');
+            }
+        }
+
+        function deletePatient(id) {
+            if (confirm('Are you sure you want to delete this patient?')) {
+                data.patients = data.patients.filter(patient => patient.id !== id);
+                localStorage.setItem('dentalHospitalData', JSON.stringify(data));
+                renderPatients();
+                updateDashboardCounts();
+                showNotification('Patient deleted successfully!', 'success');
+            }
+        }
+
+        function deleteStaff(id) {
+            if (confirm('Are you sure you want to delete this staff member?')) {
+                data.staff = data.staff.filter(staff => staff.id !== id);
+                localStorage.setItem('dentalHospitalData', JSON.stringify(data));
+                renderStaff();
+                showNotification('Staff member deleted successfully!', 'success');
+            }
+        }
+
+        function deleteService(id) {
+            if (confirm('Are you sure you want to delete this service?')) {
+                data.services = data.services.filter(service => service.id !== id);
+                localStorage.setItem('dentalHospitalData', JSON.stringify(data));
+                renderServices();
+                showNotification('Service deleted successfully!', 'success');
+            }
+        }
+
+        // Notification function
+        function showNotification(message, type) {
+            const notificationContainer = document.getElementById('notification-container');
+
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show notification`;
+            notification.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+
+            // Add to page
+            notificationContainer.appendChild(notification);
+
+            // Show notification
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 5000);
+        }
+
+        // Initialize the admin panel
+        document.addEventListener('DOMContentLoaded', function () {
+            updateDashboardCounts();
+            renderAppointments();
+            renderPatients();
+            renderStaff();
+            renderServices();
+            renderRecentAppointments();
+        });
+    </script>
+</body>
+
+</html>
