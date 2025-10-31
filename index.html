@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmileBright Dental Hospital</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --secondary: #8b5cf6;
+            --accent: #06b6d4;
+            --light: #f0f9ff;
+            --dark: #1e3a8a;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .hero-section {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .card-3d {
+            transform-style: preserve-3d;
+            transition: all 0.5s ease;
+            perspective: 1000px;
+        }
+
+        .card-3d:hover {
+            transform: rotateY(10deg) rotateX(5deg) translateY(-10px);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translate(0, 0px);
+            }
+
+            50% {
+                transform: translate(0, -15px);
+            }
+
+            100% {
+                transform: translate(0, -0px);
+            }
+        }
+
+        .btn-glow {
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            border: none;
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-glow:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
+        }
+
+        .image-hover {
+            transition: all 0.5s ease;
+            overflow: hidden;
+        }
+
+        .image-hover:hover {
+            transform: scale(1.05);
+        }
+
+        .image-hover img {
+            transition: all 0.5s ease;
+        }
+
+        .image-hover:hover img {
+            transform: scale(1.1);
+        }
+
+        .admin-panel {
+            background-color: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        .admin-sidebar {
+            background: linear-gradient(180deg, var(--dark), var(--primary));
+            color: white;
+            min-height: 100vh;
+            box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-content {
+            padding: 20px;
+        }
+
+        .image-preview {
+            max-width: 200px;
+            max-height: 200px;
+            margin-top: 10px;
+            border-radius: 10px;
+        }
+
+        .nav-tabs .nav-link.active {
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+        }
+
+        .section-title {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            width: 70%;
+            height: 4px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            bottom: -10px;
+            left: 15%;
+            border-radius: 2px;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .login-left {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border-left: 5px solid var(--primary);
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 30px;
+        }
+
+        .staff-card {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .staff-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .staff-image {
+            height: 250px;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+
+        .staff-card:hover .staff-image {
+            transform: scale(1.1);
+        }
+
+        .about-counter {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .about-counter:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .counter-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline:before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--primary), var(--accent));
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            width: 45%;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 55%;
+        }
+
+        .timeline-content {
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .timeline-content:after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            top: 20px;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content:after {
+            right: -50px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content:after {
+            left: -50px;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hms-feature-card {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .hms-feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .hms-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 30px;
+        }
+
+        .navbar-nav .nav-link.active {
+            color: var(--primary) !important;
+            font-weight: bold;
+        }
+
+        .credentials-hint {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border-left: 3px solid var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#" onclick="showPage('home')">
+                <i class="fas fa-tooth text-primary me-2"></i>
+                <span class="fw-bold" style="color: var(--primary);">SmileBright</span> Dental
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" onclick="showPage('home')">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showPage('about')">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showPage('services')">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showPage('hms')">HMS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showPage('contact')">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-glow text-white px-3" href="#" id="admin-login-btn">Admin Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="container h-100 d-flex align-items-center hero-content">
+                <div class="row w-100">
+                    <div class="col-lg-6 text-white">
+                        <h1 class="display-4 fw-bold mb-4">Your Smile is Our Priority</h1>
+                        <p class="lead mb-4">Experience world-class dental care with our state-of-the-art technology and
+                            expert dental professionals.</p>
+                        <div class="d-flex gap-3">
+                            <a href="#" class="btn btn-light btn-lg px-4 py-2 fw-bold" style="color: var(--primary);"
+                                onclick="showPage('hms')">Book Appointment</a>
+                            <a href="#" class="btn btn-outline-light btn-lg px-4 py-2"
+                                onclick="showPage('services')">Our Services</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Preview Section -->
+        <section class="py-5 bg-light">
+            <div class="container">
+                <h2 class="text-center fw-bold mb-5 section-title">Why Choose SmileBright Dental?</h2>
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="card card-3d shadow-sm border-0 h-100 text-center p-4">
+                            <i class="fas fa-user-md text-primary display-4 mb-3"></i>
+                            <h5>Expert Dentists</h5>
+                            <p>Our team of certified dental professionals provides personalized care with years of
+                                experience.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card card-3d shadow-sm border-0 h-100 text-center p-4">
+                            <i class="fas fa-teeth text-primary display-4 mb-3"></i>
+                            <h5>Advanced Technology</h5>
+                            <p>We use the latest dental technology for accurate diagnoses and effective treatments.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card card-3d shadow-sm border-0 h-100 text-center p-4">
+                            <i class="fas fa-clock text-primary display-4 mb-3"></i>
+                            <h5>Flexible Timings</h5>
+                            <p>We offer convenient appointment times to fit your busy schedule.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <a href="#" class="btn btn-glow" onclick="showPage('about')">Learn More About Us</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Preview Section -->
+        <section class="py-5">
+            <div class="container">
+                <h2 class="text-center fw-bold mb-5 section-title">Our Dental Services</h2>
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="card card-3d shadow-sm border-0 h-100 floating">
+                            <div class="card-body text-center p-4">
+                                <div class="service-icon">
+                                    <i class="fas fa-tooth"></i>
+                                </div>
+                                <h5 class="card-title">General Dentistry</h5>
+                                <p class="card-text">Regular checkups, cleanings, fillings, and preventive care.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card card-3d shadow-sm border-0 h-100 floating" style="animation-delay: 0.2s;">
+                            <div class="card-body text-center p-4">
+                                <div class="service-icon">
+                                    <i class="fas fa-teeth"></i>
+                                </div>
+                                <h5 class="card-title">Cosmetic Dentistry</h5>
+                                <p class="card-text">Teeth whitening, veneers, and smile makeovers.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card card-3d shadow-sm border-0 h-100 floating" style="animation-delay: 0.4s;">
+                            <div class="card-body text-center p-4">
+                                <div class="service-icon">
+                                    <i class="fas fa-tooth"></i>
+                                </div>
+                                <h5 class="card-title">Orthodontics</h5>
+                                <p class="card-text">Braces and aligners to correct teeth alignment.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <a href="#" class="btn btn-glow" onclick="showPage('services')">View All Services</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- About Page -->
+    <div id="about" class="page">
+        <section class="py-5 bg-light">
+            <div class="container">
+                <h2 class="text-center fw-bold mb-5 section-title">About SmileBright Dental</h2>
+
+                <!-- Animated Stats Counters -->
+                <div class="row mb-5">
+                    <div class="col-md-3 mb-4">
+                        <div class="about-counter">
+                            <div class="counter-number" data-target="5000">0</div>
+                            <p>Happy Patients</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="about-counter">
+                            <div class="counter-number" data-target="15">0</div>
+                            <p>Years Experience</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="about-counter">
+                            <div class="counter-number" data-target="50">0</div>
+                            <p>Dental Procedures</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="about-counter">
+                            <div class="counter-number" data-target="12">0</div>
+                            <p>Expert Dentists</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row align-items-center mb-5">
+                    <div class="col-lg-6">
+                        <h3 class="fw-bold mb-4">Our Story</h3>
+                        <p class="mb-4">Established in 2005, SmileBright Dental Hospital has been providing
+                            comprehensive dental care with a focus on patient comfort and advanced treatment
+                            methodologies.</p>
+                        <p class="mb-4">Our facility features the latest in dental technology, including digital X-rays,
+                            3D imaging, and laser dentistry, ensuring precise diagnoses and effective treatments.</p>
+                        <div class="d-flex">
+                            <div class="me-4">
+                                <i class="fas fa-award text-primary fa-2x mb-2"></i>
+                                <h5>Certified Excellence</h5>
+                                <p>ADA accredited facility</p>
+                            </div>
+                            <div class="me-4">
+                                <i class="fas fa-shield-alt text-primary fa-2x mb-2"></i>
+                                <h5>Safety First</h5>
+                                <p>Sterilization protocols</p>
+                            </div>
+                            <div>
+                                <i class="fas fa-hand-holding-heart text-primary fa-2x mb-2"></i>
+                                <h5>Patient Care</h5>
+                                <p>Compassionate approach</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card card-3d shadow-lg border-0 image-hover">
+                            <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                                class="card-img-top" alt="Dental Clinic">
+                            <div class="card-body">
+                                <h5 class="card-title">Modern Dental Facility</h5>
+                                <p class="card-text">Our clinic is designed with patient comfort in mind, featuring
+                                    relaxing environments and cutting-edge equipment.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timeline Section -->
+                <h3 class="text-center fw-bold mb-4 section-title">Our Journey</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <h5>2005 - Foundation</h5>
+                            <p>SmileBright Dental Hospital was established with a vision to provide accessible,
+                                high-quality dental care.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <h5>2010 - Expansion</h5>
+                            <p>We expanded our facility and introduced advanced dental technology including digital
+                                X-rays.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <h5>2015 - Dental Lab</h5>
+                            <p>Our in-house dental laboratory was established to provide custom dental prosthetics.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <h5>2020 - Digital Dentistry</h5>
+                            <p>We implemented CAD/CAM technology and 3D printing for precise dental restorations.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <h5>2023 - Today</h5>
+                            <p>Continuing to innovate with laser dentistry and minimally invasive techniques.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Services Page -->
+    <div id="services" class="page">
+        <section class="py-5 bg-light">
+            <div class="container">
+                <h2 class="text-center fw-bold mb-5 section-title">Our Dental Services</h2>
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="card card-3d shadow-sm border-0 h-100 floating">
+                            <div class="card-body text-center p-4">
+                                <div class="service-icon">
+                                    <i class="fas fa-tooth"></i>
+                                </div>
+                                <h5 class="card-title">General Dentistry</h5>
+                                <p class="card-text">Regular checkups, cleanings, fillings, and preventive care to
+                                    maintain your oral health.</p>
+                                <a href="#" class="btn btn-glow mt-3" onclick="showPage('hms')">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card card-3d shadow-sm border-0 h-100 floating" style="animation-delay: 0.2s;">
+                            <div class="card-body text-center p-4">
+                                <div class="service-icon">
+                                    <i class="fas fa-teeth"></i>
+                                </div>
+                                <h5 class="card-title">Cosmetic Dentistry</h5>
+                                <p class="card-text">Teeth whitening, veneers, and smile makeovers to enhance your
+                                    appearance.</p>
+                                <a href="#" class="btn btn-glow mt-3" onclick="showPage('hms')">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card card-3d shadow-sm border-0 h-100 floating" style="animation-delay: 0.4s;">
+                            <div class="card-body text-center p-4">
+                                <div class="service-icon">
+                                    <i class="fas fa-tooth"></i>
+                                </div>
+                                <h5 class="card-title">Orthodontics</h5>
+                                <p class="card-text">Braces and aligners to correct teeth alignment and improve your
+                                    bite.</p>
+                                <a href="#" class="btn btn-glow mt-3" onclick="showPage('hms')">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card card-3d shadow-sm border-0 h-100 floating" style="animation-delay: 0.6s;">
+                            <div class="card-body text-center p-4">
+                                <div class="service-icon">
+                                    <i class="fas fa-teeth-open"></i>
+                                </div>
+                                <h5 class="card-title">Oral Surgery</h5>
+                                <p class="card-text">Tooth extractions, dental implants, and other surgical procedures.
+                                </p>
+                                <a href="#" class="btn btn-glow mt-3" onclick="showPage('hms')">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card card-3d shadow-sm border-0 h-100 floating" style="animation-delay: 0.8s;">
+                            <div class="card-body text-center p-4">
+                                <div class="service-icon">
+                                    <i class="fas fa-teeth"></i>
+                                </div>
+                                <h5 class="card-title">Periodontics</h5>
+                                <p class="card-text">Treatment of gum diseases and conditions affecting the tissues
+                                    supporting teeth.</p>
+                                <a href="#" class="btn btn-glow mt-3" onclick="showPage('hms')">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card card-3d shadow-sm border-0 h-100 floating" style="animation-delay: 1s;">
+                            <div class="card-body text-center p-4">
+                                <div class="service-icon">
+                                    <i class="fas fa-baby"></i>
+                                </div>
+                                <h5 class="card-title">Pediatric Dentistry</h5>
+                                <p class="card-text">Specialized dental care for children and adolescents.</p>
+                                <a href="#" class="btn btn-glow mt-3" onclick="showPage('hms')">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Hospital Management System (HMS) Page -->
+    <div id="hms" class="page">
+        <section class="py-5 bg-light">
+            <div class="container">
+                <h2 class="text-center fw-bold mb-5 section-title">Hospital Management System</h2>
+
+                <!-- HMS Features -->
+                <div class="row mb-5">
+                    <div class="col-md-4 mb-4">
+                        <div class="hms-feature-card text-center p-4">
+                            <div class="hms-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <h5>Appointment Booking</h5>
+                            <p>Schedule your dental appointments online with our easy-to-use booking system.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="hms-feature-card text-center p-4">
+                            <div class="hms-icon">
+                                <i class="fas fa-file-medical"></i>
+                            </div>
+                            <h5>Digital Records</h5>
+                            <p>Access your dental records and treatment history securely online.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="hms-feature-card text-center p-4">
+                            <div class="hms-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <h5>Billing & Insurance</h5>
+                            <p>Manage payments, insurance claims, and billing information seamlessly.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Appointment Booking -->
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body p-4">
+                                <h4 class="card-title text-center mb-4">Book Your Dental Appointment</h4>
+                                <form id="appointment-form">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="name" class="form-label">Full Name</label>
+                                            <input type="text" class="form-control" id="name" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="email" class="form-label">Email Address</label>
+                                            <input type="email" class="form-control" id="email" required>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="phone" class="form-label">Phone Number</label>
+                                            <input type="tel" class="form-control" id="phone" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="dob" class="form-label">Date of Birth</label>
+                                            <input type="date" class="form-control" id="dob" required>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="service" class="form-label">Service Required</label>
+                                            <select class="form-select" id="service" required>
+                                                <option value="">Select a service</option>
+                                                <option value="general">General Dentistry</option>
+                                                <option value="cosmetic">Cosmetic Dentistry</option>
+                                                <option value="orthodontics">Orthodontics</option>
+                                                <option value="surgery">Oral Surgery</option>
+                                                <option value="periodontics">Periodontics</option>
+                                                <option value="pediatric">Pediatric Dentistry</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="date" class="form-label">Preferred Date</label>
+                                            <input type="date" class="form-control" id="date" required>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="message" class="form-label">Additional Message</label>
+                                        <textarea class="form-control" id="message" rows="4"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-glow w-100 py-2 fw-bold">Book
+                                        Appointment</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Patient Portal -->
+                <div class="row mt-5 justify-content-center">
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <h4 class="card-title text-center mb-4">Patient Portal Login</h4>
+                                <p class="text-center mb-4">Access your dental records, appointment history, and
+                                    treatment plans.</p>
+
+                                <form id="patient-login-form">
+                                    <div class="mb-3">
+                                        <label for="patient-email" class="form-label">Email Address</label>
+                                        <input type="email" class="form-control" id="patient-email" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="patient-password" class="form-label">Password</label>
+                                        <input type="password" class="form-control" id="patient-password" required>
+                                    </div>
+                                    <div class="mb-3 form-check">
+                                        <input type="checkbox" class="form-check-input" id="remember-me">
+                                        <label class="form-check-label" for="remember-me">Remember me</label>
+                                    </div>
+                                    <button type="submit" class="btn btn-glow w-100 mb-3">Login to Patient
+                                        Portal</button>
+                                    <div class="text-center">
+                                        <a href="#" class="text-primary">Forgot Password?</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Contact Page -->
+    <div id="contact" class="page">
+        <section class="py-5 bg-light">
+            <div class="container">
+                <h2 class="text-center fw-bold mb-5 section-title">Contact Us</h2>
+                <div class="row">
+                    <div class="col-lg-6 mb-4">
+                        <div class="card shadow-sm border-0 h-100">
+                            <div class="card-body p-4">
+                                <h5 class="card-title">Get In Touch</h5>
+                                <form id="contact-form">
+                                    <div class="mb-3">
+                                        <label for="contact-name" class="form-label">Full Name</label>
+                                        <input type="text" class="form-control" id="contact-name" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="contact-email" class="form-label">Email Address</label>
+                                        <input type="email" class="form-control" id="contact-email" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="contact-subject" class="form-label">Subject</label>
+                                        <input type="text" class="form-control" id="contact-subject" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="contact-message" class="form-label">Message</label>
+                                        <textarea class="form-control" id="contact-message" rows="4"
+                                            required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-glow w-100">Send Message</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card shadow-sm border-0 h-100">
+                            <div class="card-body p-4">
+                                <h5 class="card-title">Our Location</h5>
+                                <div class="mb-4">
+                                    <h6><i class="fas fa-map-marker-alt text-primary me-2"></i> Address</h6>
+                                    <p>No.-2, Ramchandrapur Bypass Rd, opposite udhyog vibhag gate, Master Colony,
+                                        Ramchandrapur, Bihar Sharif, Bihar 803216</p>
+                                </div>
+                                <div class="mb-4">
+                                    <h6><i class="fas fa-phone text-primary me-2"></i> Phone</h6>
+                                    <p>+91 98765 43210</p>
+                                </div>
+                                <div class="mb-4">
+                                    <h6><i class="fas fa-envelope text-primary me-2"></i> Email</h6>
+                                    <p>info@smilebrightdental.com</p>
+                                </div>
+                                <div class="mb-4">
+                                    <h6><i class="fas fa-clock text-primary me-2"></i> Opening Hours</h6>
+                                    <p>Monday - Friday: 8:00 AM - 6:00 PM</p>
+                                    <p>Saturday: 9:00 AM - 2:00 PM</p>
+                                    <p>Sunday: Closed</p>
+                                </div>
+                                <div class="mt-4">
+                                    <iframe
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3604.238674324952!2d85.42561431501305!3d25.39662098380821!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f29937c52d4f3b%3A0x7a1bf9a8a9a8a9a8!2sRamchandrapur%20Bypass%20Rd%2C%20Bihar%20Sharif%2C%20Bihar%20803216!5e0!3m2!1sen!2sin!4v1647856789012!5m2!1sen!2sin"
+                                        width="100%" height="200" style="border:0; border-radius: 10px;"
+                                        allowfullscreen="" loading="lazy"></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5>SmileBright Dental</h5>
+                    <p>Providing exceptional dental care with compassion and expertise since 2005.</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white" onclick="showPage('home')">Home</a></li>
+                        <li><a href="#" class="text-white" onclick="showPage('about')">About Us</a></li>
+                        <li><a href="#" class="text-white" onclick="showPage('services')">Services</a></li>
+                        <li><a href="#" class="text-white" onclick="showPage('hms')">HMS</a></li>
+                        <li><a href="#" class="text-white" onclick="showPage('contact')">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Connect With Us</h5>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <p>&copy; 2025 SmileBright Dental Hospital. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Admin Login Modal -->
+    <div class="modal fade" id="adminLoginModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content login-container">
+                <div class="row g-0">
+                    <div class="col-md-6 login-left d-flex align-items-center justify-content-center p-5">
+                        <div class="text-center">
+                            <i class="fas fa-tooth display-1 mb-3"></i>
+                            <h3>SmileBright Admin</h3>
+                            <p>Manage your dental hospital with ease</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-5">
+                        <div class="modal-header border-0 p-0 mb-4">
+                            <h5 class="modal-title">Admin Login</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <form id="admin-login-form">
+                            <div class="mb-3">
+                                <label for="admin-username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="admin-username" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="admin-password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="admin-password" required>
+                            </div>
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="remember">
+                                <label class="form-check-label" for="remember">Remember me</label>
+                            </div>
+                            <button type="submit" class="btn btn-glow w-100">Login</button>
+                        </form>
+                        <div class="credentials-hint mt-3">
+                            <strong>Demo Credentials:</strong><br>
+                            Username: <code>admin</code><br>
+                            Password: <code>admin123</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notification-container"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Sample data for initial display
+        const initialData = {
+            appointments: [],
+            patients: [],
+            staff: [
+                { id: 1, name: "Dr. Sarah Johnson", role: "Chief Dentist", email: "sarah@smilebright.com", phone: "+91 98765 43210", status: "Active" },
+                { id: 2, name: "Dr. Michael Chen", role: "Orthodontist", email: "michael@smilebright.com", phone: "+91 98765 43211", status: "Active" },
+                { id: 3, name: "Dr. Emily Rodriguez", role: "Periodontist", email: "emily@smilebright.com", phone: "+91 98765 43212", status: "Active" }
+            ],
+            services: [
+                { id: 1, name: "General Dentistry", description: "Regular checkups, cleanings, fillings", price: "₹500", duration: "30 min" },
+                { id: 2, name: "Cosmetic Dentistry", description: "Teeth whitening, veneers", price: "₹3000", duration: "1 hour" },
+                { id: 3, name: "Orthodontics", description: "Braces and aligners", price: "₹25000", duration: "1.5 hours" },
+                { id: 4, name: "Oral Surgery", description: "Tooth extractions, implants", price: "₹5000", duration: "2 hours" },
+                { id: 5, name: "Periodontics", description: "Gum disease treatment", price: "₹2000", duration: "1 hour" },
+                { id: 6, name: "Pediatric Dentistry", description: "Dental care for children", price: "₹800", duration: "45 min" }
+            ]
+        };
+
+        // Initialize data from localStorage or use initial data
+        let data = JSON.parse(localStorage.getItem('dentalHospitalData')) || initialData;
+
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('dentalHospitalData', JSON.stringify(data));
+        }
+
+        // Page navigation function
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+
+            // Update active nav link
+            document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Find and activate the corresponding nav link
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+            for (let link of navLinks) {
+                if (link.getAttribute('onclick') === `showPage('${pageId}')`) {
+                    link.classList.add('active');
+                    break;
+                }
+            }
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+
+            // Animate counters if on about page
+            if (pageId === 'about') {
+                setTimeout(animateCounters, 500);
+            }
+        }
+
+        // Animated counter for About section
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter-number');
+
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const increment = target / 100;
+                let current = 0;
+
+                const updateCounter = () => {
+                    if (current < target) {
+                        current += increment;
+                        counter.textContent = Math.ceil(current);
+                        setTimeout(updateCounter, 20);
+                    } else {
+                        counter.textContent = target;
+                    }
+                };
+
+                updateCounter();
+            });
+        }
+
+        // Appointment form
+        document.getElementById('appointment-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const dob = document.getElementById('dob').value;
+            const service = document.getElementById('service').value;
+            const date = document.getElementById('date').value;
+            const message = document.getElementById('message').value;
+
+            const newAppointment = {
+                id: Date.now(),
+                name,
+                email,
+                phone,
+                dob,
+                service,
+                date,
+                message,
+                submitted: new Date().toISOString()
+            };
+
+            data.appointments.push(newAppointment);
+
+            // Add patient if not exists
+            const existingPatient = data.patients.find(p => p.email === email);
+            if (!existingPatient) {
+                data.patients.push({
+                    id: Date.now() + 1,
+                    name,
+                    email,
+                    phone,
+                    dob,
+                    registered: new Date().toISOString()
+                });
+            }
+
+            saveData();
+
+            // Reset form and show success message
+            this.reset();
+            showNotification('Appointment booked successfully! We will contact you soon.', 'success');
+        });
+
+        // Contact form
+        document.getElementById('contact-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // In a real application, this would send the message to a server
+            // For this demo, we'll just show a success message
+            this.reset();
+            showNotification('Your message has been sent successfully!', 'success');
+        });
+
+        // Patient login form
+        document.getElementById('patient-login-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Simple validation for demo
+            const email = document.getElementById('patient-email').value;
+            const password = document.getElementById('patient-password').value;
+
+            if (email && password) {
+                showNotification('Login successful! Redirecting to patient portal...', 'success');
+            } else {
+                showNotification('Please enter valid credentials.', 'error');
+            }
+        });
+
+        // Admin login form - Redirect to separate admin page
+        document.getElementById('admin-login-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
+
+            // Admin authentication with credentials
+            if (username === 'admin' && password === 'admin123') {
+                // Hide login modal
+                const adminLoginModal = bootstrap.Modal.getInstance(document.getElementById('adminLoginModal'));
+                adminLoginModal.hide();
+
+                // Redirect to admin panel in a new page
+                window.open('admin-panel.html', '_blank');
+
+                // Reset form
+                this.reset();
+
+                showNotification('Admin login successful! Opening admin panel...', 'success');
+            } else {
+                showNotification('Invalid username or password!', 'error');
+            }
+        });
+
+        // Notification function
+        function showNotification(message, type) {
+            const notificationContainer = document.getElementById('notification-container');
+
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show notification`;
+            notification.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+
+            // Add to page
+            notificationContainer.appendChild(notification);
+
+            // Show notification
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 5000);
+        }
+
+        // Admin panel link from main site
+        document.getElementById('admin-login-btn').addEventListener('click', function (e) {
+            e.preventDefault();
+            const adminLoginModal = new bootstrap.Modal(document.getElementById('adminLoginModal'));
+            adminLoginModal.show();
+        });
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function () {
+            // Load initial data
+            saveData();
+        });
+    </script>
+</body>
+
+</html>
