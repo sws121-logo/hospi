@@ -21,17 +21,31 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f8f9fa;
+            overflow-x: hidden;
+        }
+
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
         }
 
         .admin-sidebar {
             background: linear-gradient(180deg, var(--dark), var(--primary));
             color: white;
-            min-height: 100vh;
+            width: 250px;
             box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+            transition: transform 0.3s ease;
         }
 
         .admin-content {
+            flex: 1;
             padding: 20px;
+            margin-left: 250px;
+            transition: margin-left 0.3s ease;
         }
 
         .stats-card {
@@ -75,240 +89,299 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1100;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 12px;
+            font-size: 1.2rem;
+        }
+
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .admin-sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .admin-sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .admin-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .admin-sidebar.active + .admin-content {
+                margin-left: 0;
+            }
+            
+            .overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+            }
+            
+            .overlay.active {
+                display: block;
+            }
+        }
     </style>
 </head>
 
 <body>
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Overlay for mobile -->
+    <div class="overlay" id="overlay"></div>
+
     <!-- Admin Panel -->
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-3 admin-sidebar">
-                <div class="d-flex align-items-center justify-content-between p-3 border-bottom">
-                    <h3 class="mb-0">Admin Panel</h3>
-                    <button class="btn btn-sm btn-light" id="logout-btn">Logout</button>
-                </div>
-                <ul class="nav flex-column mt-3">
-                    <li class="nav-item">
-                        <a class="nav-link text-white active" href="#" data-tab="dashboard">
-                            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="#" data-tab="appointments-management">
-                            <i class="fas fa-calendar-check me-2"></i> Appointments
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="#" data-tab="patients-management">
-                            <i class="fas fa-user-injured me-2"></i> Patients
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="#" data-tab="staff-management">
-                            <i class="fas fa-user-md me-2"></i> Staff
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="#" data-tab="services-management">
-                            <i class="fas fa-teeth me-2"></i> Services
-                        </a>
-                    </li>
-                </ul>
+    <div class="admin-container">
+        <div class="admin-sidebar" id="admin-sidebar">
+            <div class="d-flex align-items-center justify-content-between p-3 border-bottom">
+                <h3 class="mb-0">Admin Panel</h3>
+                <button class="btn btn-sm btn-light" id="logout-btn">Logout</button>
             </div>
-            <div class="col-md-9 admin-content">
-                <!-- Dashboard -->
-                <div id="dashboard" class="admin-tab">
-                    <h2>Dashboard</h2>
-                    <div class="row">
-                        <div class="col-md-3 mb-4">
-                            <div class="stats-card p-3">
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <h5 class="text-muted">Total Appointments</h5>
-                                        <h3 id="total-appointments-count">0</h3>
-                                    </div>
-                                    <div class="align-self-center">
-                                        <i class="fas fa-calendar-check text-primary fa-2x"></i>
-                                    </div>
+            <ul class="nav flex-column mt-3">
+                <li class="nav-item">
+                    <a class="nav-link text-white active" href="#" data-tab="dashboard">
+                        <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#" data-tab="appointments-management">
+                        <i class="fas fa-calendar-check me-2"></i> Appointments
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#" data-tab="patients-management">
+                        <i class="fas fa-user-injured me-2"></i> Patients
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#" data-tab="staff-management">
+                        <i class="fas fa-user-md me-2"></i> Staff
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#" data-tab="services-management">
+                        <i class="fas fa-teeth me-2"></i> Services
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="admin-content">
+            <!-- Dashboard -->
+            <div id="dashboard" class="admin-tab">
+                <h2>Dashboard</h2>
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 mb-4">
+                        <div class="stats-card p-3">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h5 class="text-muted">Total Appointments</h5>
+                                    <h3 id="total-appointments-count">0</h3>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-4">
-                            <div class="stats-card p-3">
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <h5 class="text-muted">Total Patients</h5>
-                                        <h3 id="total-patients-count">0</h3>
-                                    </div>
-                                    <div class="align-self-center">
-                                        <i class="fas fa-user-injured text-primary fa-2x"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-4">
-                            <div class="stats-card p-3">
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <h5 class="text-muted">Today's Appointments</h5>
-                                        <h3 id="today-appointments-count">0</h3>
-                                    </div>
-                                    <div class="align-self-center">
-                                        <i class="fas fa-calendar-day text-primary fa-2x"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-4">
-                            <div class="stats-card p-3">
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <h5 class="text-muted">Revenue</h5>
-                                        <h3 id="revenue-count">₹0</h3>
-                                    </div>
-                                    <div class="align-self-center">
-                                        <i class="fas fa-rupee-sign text-primary fa-2x"></i>
-                                    </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-calendar-check text-primary fa-2x"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="row mt-4">
-                        <div class="col-md-6">
-                            <div class="card border-0 shadow-sm">
-                                <div class="card-header bg-primary text-white">
-                                    <h5 class="mb-0">Recent Appointments</h5>
+                    <div class="col-md-3 col-sm-6 mb-4">
+                        <div class="stats-card p-3">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h5 class="text-muted">Total Patients</h5>
+                                    <h3 id="total-patients-count">0</h3>
                                 </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Service</th>
-                                                    <th>Date</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="recent-appointments">
-                                                <!-- Recent appointments will be loaded here -->
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-user-injured text-primary fa-2x"></i>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card border-0 shadow-sm">
-                                <div class="card-header bg-primary text-white">
-                                    <h5 class="mb-0">Quick Actions</h5>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-4">
+                        <div class="stats-card p-3">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h5 class="text-muted">Today's Appointments</h5>
+                                    <h3 id="today-appointments-count">0</h3>
                                 </div>
-                                <div class="card-body">
-                                    <div class="d-grid gap-2">
-                                        <button class="btn btn-glow" data-tab="appointments-management">Manage
-                                            Appointments</button>
-                                        <button class="btn btn-glow" data-tab="patients-management">View
-                                            Patients</button>
-                                        <button class="btn btn-glow" data-tab="staff-management">Manage
-                                            Staff</button>
-                                        <button class="btn btn-glow" data-tab="services-management">Manage
-                                            Services</button>
-                                    </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-calendar-day text-primary fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-4">
+                        <div class="stats-card p-3">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h5 class="text-muted">Revenue</h5>
+                                    <h3 id="revenue-count">₹0</h3>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-rupee-sign text-primary fa-2x"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Appointments Management -->
-                <div id="appointments-management" class="admin-tab" style="display: none;">
-                    <h2>Appointments Management</h2>
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover">
-                            <thead class="table-primary">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Patient Name</th>
-                                    <th>Service</th>
-                                    <th>Date</th>
-                                    <th>Time</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="appointments-table">
-                                <!-- Appointments data will be loaded here -->
-                            </tbody>
-                        </table>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">Recent Appointments</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Service</th>
+                                                <th>Date</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="recent-appointments">
+                                            <!-- Recent appointments will be loaded here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">Quick Actions</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-glow" data-tab="appointments-management">Manage
+                                        Appointments</button>
+                                    <button class="btn btn-glow" data-tab="patients-management">View
+                                        Patients</button>
+                                    <button class="btn btn-glow" data-tab="staff-management">Manage
+                                        Staff</button>
+                                    <button class="btn btn-glow" data-tab="services-management">Manage
+                                        Services</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Patients Management -->
-                <div id="patients-management" class="admin-tab" style="display: none;">
-                    <h2>Patients Management</h2>
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover">
-                            <thead class="table-primary">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Last Visit</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="patients-table">
-                                <!-- Patients data will be loaded here -->
-                            </tbody>
-                        </table>
-                    </div>
+            <!-- Appointments Management -->
+            <div id="appointments-management" class="admin-tab" style="display: none;">
+                <h2>Appointments Management</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>ID</th>
+                                <th>Patient Name</th>
+                                <th>Service</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="appointments-table">
+                            <!-- Appointments data will be loaded here -->
+                        </tbody>
+                    </table>
                 </div>
+            </div>
 
-                <!-- Staff Management -->
-                <div id="staff-management" class="admin-tab" style="display: none;">
-                    <h2>Staff Management</h2>
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover">
-                            <thead class="table-primary">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Role</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="staff-table">
-                                <!-- Staff data will be loaded here -->
-                            </tbody>
-                        </table>
-                    </div>
+            <!-- Patients Management -->
+            <div id="patients-management" class="admin-tab" style="display: none;">
+                <h2>Patients Management</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Last Visit</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="patients-table">
+                            <!-- Patients data will be loaded here -->
+                        </tbody>
+                    </table>
                 </div>
+            </div>
 
-                <!-- Services Management -->
-                <div id="services-management" class="admin-tab" style="display: none;">
-                    <h2>Services Management</h2>
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover">
-                            <thead class="table-primary">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Service Name</th>
-                                    <th>Description</th>
-                                    <th>Price</th>
-                                    <th>Duration</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="services-table">
-                                <!-- Services data will be loaded here -->
-                            </tbody>
-                        </table>
-                    </div>
+            <!-- Staff Management -->
+            <div id="staff-management" class="admin-tab" style="display: none;">
+                <h2>Staff Management</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="staff-table">
+                            <!-- Staff data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Services Management -->
+            <div id="services-management" class="admin-tab" style="display: none;">
+                <h2>Services Management</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>ID</th>
+                                <th>Service Name</th>
+                                <th>Description</th>
+                                <th>Price</th>
+                                <th>Duration</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="services-table">
+                            <!-- Services data will be loaded here -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -487,6 +560,11 @@
                     tab.style.display = 'none';
                 });
                 document.getElementById(tabId).style.display = 'block';
+                
+                // Close sidebar on mobile after selection
+                if (window.innerWidth <= 768) {
+                    closeSidebar();
+                }
             });
         });
 
@@ -513,6 +591,24 @@
                 window.close();
             }
         });
+
+        // Mobile menu toggle
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const adminSidebar = document.getElementById('admin-sidebar');
+        const overlay = document.getElementById('overlay');
+        
+        function toggleSidebar() {
+            adminSidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+        
+        function closeSidebar() {
+            adminSidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+        
+        mobileMenuToggle.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', closeSidebar);
 
         // Delete functions
         function deleteAppointment(id) {
