@@ -364,6 +364,72 @@
             border-radius: 5px;
             border-left: 3px solid var(--primary);
         }
+
+        .patient-dashboard {
+            background-color: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        .patient-sidebar {
+            background: linear-gradient(180deg, var(--dark), var(--primary));
+            color: white;
+            min-height: 100vh;
+            box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .patient-content {
+            padding: 20px;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .appointment-card {
+            border-left: 5px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .appointment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .status-scheduled {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .status-completed {
+            background-color: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .status-cancelled {
+            background-color: #ffebee;
+            color: #d32f2f;
+        }
+
+        .health-report {
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .health-report:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 
@@ -827,12 +893,286 @@
                                         <a href="#" class="text-primary">Forgot Password?</a>
                                     </div>
                                 </form>
+                                <div class="credentials-hint mt-3">
+                                    <strong>Demo Credentials:</strong><br>
+                                    Email: <code>patient@demo.com</code><br>
+                                    Password: <code>patient123</code>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+    </div>
+
+    <!-- Patient Dashboard Page -->
+    <div id="patient-dashboard" class="page">
+        <div class="patient-dashboard">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Sidebar -->
+                    <div class="col-md-3 col-lg-2 patient-sidebar">
+                        <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-4 text-white">
+                            <a href="#" class="d-flex align-items-center pb-3 mb-4 text-white text-decoration-none border-bottom w-100">
+                                <i class="fas fa-tooth me-2"></i>
+                                <span class="fs-5 fw-bold">SmileBright</span>
+                            </a>
+                            <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="patient-menu">
+                                <li class="nav-item w-100">
+                                    <a href="#" class="nav-link text-white px-0 align-middle active" onclick="showPatientTab('overview')">
+                                        <i class="fas fa-tachometer-alt me-2"></i> <span class="ms-1">Dashboard</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item w-100">
+                                    <a href="#" class="nav-link text-white px-0 align-middle" onclick="showPatientTab('appointments')">
+                                        <i class="fas fa-calendar-alt me-2"></i> <span class="ms-1">Appointments</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item w-100">
+                                    <a href="#" class="nav-link text-white px-0 align-middle" onclick="showPatientTab('health-reports')">
+                                        <i class="fas fa-file-medical me-2"></i> <span class="ms-1">Health Reports</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item w-100">
+                                    <a href="#" class="nav-link text-white px-0 align-middle" onclick="showPatientTab('profile')">
+                                        <i class="fas fa-user me-2"></i> <span class="ms-1">Profile</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item w-100 mt-4">
+                                    <a href="#" class="nav-link text-white px-0 align-middle" onclick="logoutPatient()">
+                                        <i class="fas fa-sign-out-alt me-2"></i> <span class="ms-1">Logout</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Main Content -->
+                    <div class="col-md-9 col-lg-10 patient-content">
+                        <!-- Overview Tab -->
+                        <div id="patient-overview" class="patient-tab active">
+                            <div class="profile-header">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <h3 class="fw-bold">Welcome, <span id="patient-name">John Doe</span></h3>
+                                        <p class="mb-0">Here's your dental health summary</p>
+                                    </div>
+                                    <div class="col-md-4 text-end">
+                                        <div class="bg-white text-primary rounded p-3 d-inline-block">
+                                            <h4 class="mb-0" id="patient-id">P-001234</h4>
+                                            <small>Patient ID</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 mb-4">
+                                    <div class="stats-card p-4 text-center">
+                                        <i class="fas fa-calendar-check text-primary fa-2x mb-3"></i>
+                                        <h4 id="upcoming-appointments">2</h4>
+                                        <p>Upcoming Appointments</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-4">
+                                    <div class="stats-card p-4 text-center">
+                                        <i class="fas fa-tooth text-primary fa-2x mb-3"></i>
+                                        <h4 id="completed-treatments">5</h4>
+                                        <p>Completed Treatments</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-4">
+                                    <div class="stats-card p-4 text-center">
+                                        <i class="fas fa-file-medical text-primary fa-2x mb-3"></i>
+                                        <h4 id="health-reports-count">3</h4>
+                                        <p>Health Reports</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <div class="card-header bg-white">
+                                            <h5 class="card-title mb-0">Recent Appointments</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div id="recent-appointments-list">
+                                                <!-- Recent appointments will be populated here -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <div class="card-header bg-white">
+                                            <h5 class="card-title mb-0">Dental Health Status</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between mb-1">
+                                                    <span>Overall Health</span>
+                                                    <span>Good</span>
+                                                </div>
+                                                <div class="progress" style="height: 10px;">
+                                                    <div class="progress-bar bg-success" role="progressbar" style="width: 85%"></div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between mb-1">
+                                                    <span>Oral Hygiene</span>
+                                                    <span>Good</span>
+                                                </div>
+                                                <div class="progress" style="height: 10px;">
+                                                    <div class="progress-bar bg-info" role="progressbar" style="width: 80%"></div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                    <span>Gum Health</span>
+                                                    <span>Fair</span>
+                                                </div>
+                                                <div class="progress" style="height: 10px;">
+                                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 70%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Appointments Tab -->
+                        <div id="patient-appointments" class="patient-tab">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h3 class="fw-bold">My Appointments</h3>
+                                <button class="btn btn-glow" onclick="showPage('hms')">
+                                    <i class="fas fa-plus me-2"></i> Book New Appointment
+                                </button>
+                            </div>
+
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Date & Time</th>
+                                                    <th>Service</th>
+                                                    <th>Dentist</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="appointments-table-body">
+                                                <!-- Appointments will be populated here -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Health Reports Tab -->
+                        <div id="patient-health-reports" class="patient-tab">
+                            <h3 class="fw-bold mb-4">My Health Reports</h3>
+
+                            <div class="row" id="health-reports-container">
+                                <!-- Health reports will be populated here -->
+                            </div>
+                        </div>
+
+                        <!-- Profile Tab -->
+                        <div id="patient-profile" class="patient-tab">
+                            <h3 class="fw-bold mb-4">My Profile</h3>
+
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="card border-0 shadow-sm">
+                                        <div class="card-body">
+                                            <form id="patient-profile-form">
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label for="profile-name" class="form-label">Full Name</label>
+                                                        <input type="text" class="form-control" id="profile-name" required>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="profile-dob" class="form-label">Date of Birth</label>
+                                                        <input type="date" class="form-control" id="profile-dob" required>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label for="profile-email" class="form-label">Email Address</label>
+                                                        <input type="email" class="form-control" id="profile-email" required>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="profile-phone" class="form-label">Phone Number</label>
+                                                        <input type="tel" class="form-control" id="profile-phone" required>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-12">
+                                                        <label for="profile-address" class="form-label">Address</label>
+                                                        <textarea class="form-control" id="profile-address" rows="3"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label for="profile-emergency-contact" class="form-label">Emergency Contact</label>
+                                                        <input type="text" class="form-control" id="profile-emergency-contact">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="profile-blood-group" class="form-label">Blood Group</label>
+                                                        <select class="form-select" id="profile-blood-group">
+                                                            <option value="">Select</option>
+                                                            <option value="A+">A+</option>
+                                                            <option value="A-">A-</option>
+                                                            <option value="B+">B+</option>
+                                                            <option value="B-">B-</option>
+                                                            <option value="O+">O+</option>
+                                                            <option value="O-">O-</option>
+                                                            <option value="AB+">AB+</option>
+                                                            <option value="AB-">AB-</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="profile-allergies" class="form-label">Allergies</label>
+                                                    <textarea class="form-control" id="profile-allergies" rows="2"></textarea>
+                                                </div>
+                                                <button type="submit" class="btn btn-glow">Update Profile</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card border-0 shadow-sm">
+                                        <div class="card-body text-center">
+                                            <div class="mb-3">
+                                                <i class="fas fa-user-circle text-primary" style="font-size: 80px;"></i>
+                                            </div>
+                                            <h5 id="profile-display-name">John Doe</h5>
+                                            <p class="text-muted" id="profile-display-email">patient@demo.com</p>
+                                            <p class="text-muted" id="profile-display-phone">+91 98765 43210</p>
+                                            <div class="mt-4">
+                                                <button class="btn btn-outline-primary w-100 mb-2">
+                                                    <i class="fas fa-key me-2"></i> Change Password
+                                                </button>
+                                                <button class="btn btn-outline-secondary w-100">
+                                                    <i class="fas fa-download me-2"></i> Export Data
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Contact Page -->
@@ -1012,6 +1352,78 @@
         // Initialize data from localStorage or use initial data
         let data = JSON.parse(localStorage.getItem('dentalHospitalData')) || initialData;
 
+        // Sample patient data for demonstration
+        const samplePatientData = {
+            id: "P-001234",
+            name: "John Doe",
+            email: "patient@demo.com",
+            password: "patient123",
+            phone: "+91 98765 43210",
+            dob: "1985-05-15",
+            address: "123 Main Street, Patna, Bihar 800001",
+            emergencyContact: "Jane Doe (Spouse) - +91 98765 43211",
+            bloodGroup: "O+",
+            allergies: "Penicillin",
+            appointments: [
+                {
+                    id: "A-001",
+                    date: "2025-03-15",
+                    time: "10:00 AM",
+                    service: "General Dentistry",
+                    dentist: "Dr. Sarah Johnson",
+                    status: "Scheduled",
+                    notes: "Regular checkup and cleaning"
+                },
+                {
+                    id: "A-002",
+                    date: "2025-03-20",
+                    time: "2:30 PM",
+                    service: "Cosmetic Dentistry",
+                    dentist: "Dr. Michael Chen",
+                    status: "Scheduled",
+                    notes: "Teeth whitening consultation"
+                },
+                {
+                    id: "A-003",
+                    date: "2025-02-10",
+                    time: "11:00 AM",
+                    service: "General Dentistry",
+                    dentist: "Dr. Sarah Johnson",
+                    status: "Completed",
+                    notes: "Filling for cavity on tooth #15"
+                }
+            ],
+            healthReports: [
+                {
+                    id: "R-001",
+                    date: "2025-02-10",
+                    title: "Dental Checkup Report",
+                    type: "General Examination",
+                    summary: "Good overall dental health. Minor cavity detected and filled.",
+                    details: "No signs of gum disease. Oral hygiene practices are good. Recommended to continue regular brushing and flossing.",
+                    dentist: "Dr. Sarah Johnson"
+                },
+                {
+                    id: "R-002",
+                    date: "2024-11-05",
+                    title: "X-Ray Report",
+                    type: "Diagnostic Imaging",
+                    summary: "Panoramic X-ray shows normal tooth alignment and bone structure.",
+                    details: "No abnormalities detected. Wisdom teeth are properly positioned and not causing issues.",
+                    dentist: "Dr. Emily Rodriguez"
+                },
+                {
+                    id: "R-003",
+                    date: "2024-08-20",
+                    title: "Teeth Cleaning Report",
+                    type: "Preventive Care",
+                    summary: "Professional cleaning completed. Minimal plaque buildup.",
+                    details: "Gums are healthy with no signs of inflammation. No cavities detected during this visit.",
+                    dentist: "Dr. Sarah Johnson"
+                }
+            ]
+        };
+
         // Save data to localStorage
         function saveData() {
             localStorage.setItem('dentalHospitalData', JSON.stringify(data));
@@ -1048,6 +1460,209 @@
             if (pageId === 'about') {
                 setTimeout(animateCounters, 500);
             }
+        }
+
+        // Patient tab navigation
+        function showPatientTab(tabId) {
+            // Hide all patient tabs
+            document.querySelectorAll('.patient-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(`patient-${tabId}`).classList.add('active');
+
+            // Update active menu item
+            document.querySelectorAll('#patient-menu .nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Find and activate the corresponding menu item
+            const menuItems = document.querySelectorAll('#patient-menu .nav-link');
+            for (let item of menuItems) {
+                if (item.getAttribute('onclick') === `showPatientTab('${tabId}')`) {
+                    item.classList.add('active');
+                    break;
+                }
+            }
+
+            // Load data for the tab if needed
+            if (tabId === 'appointments') {
+                loadAppointmentsData();
+            } else if (tabId === 'health-reports') {
+                loadHealthReportsData();
+            } else if (tabId === 'profile') {
+                loadProfileData();
+            }
+        }
+
+        // Load appointments data
+        function loadAppointmentsData() {
+            const tableBody = document.getElementById('appointments-table-body');
+            tableBody.innerHTML = '';
+
+            samplePatientData.appointments.forEach(appointment => {
+                const statusClass = `status-${appointment.status.toLowerCase()}`;
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <div class="fw-bold">${formatDate(appointment.date)}</div>
+                        <small class="text-muted">${appointment.time}</small>
+                    </td>
+                    <td>${appointment.service}</td>
+                    <td>${appointment.dentist}</td>
+                    <td><span class="status-badge ${statusClass}">${appointment.status}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" onclick="viewAppointmentDetails('${appointment.id}')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        ${appointment.status === 'Scheduled' ? 
+                            `<button class="btn btn-sm btn-outline-danger ms-1" onclick="cancelAppointment('${appointment.id}')">
+                                <i class="fas fa-times"></i>
+                            </button>` : ''
+                        }
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Load health reports data
+        function loadHealthReportsData() {
+            const container = document.getElementById('health-reports-container');
+            container.innerHTML = '';
+
+            samplePatientData.healthReports.forEach(report => {
+                const col = document.createElement('div');
+                col.className = 'col-md-6 mb-4';
+                col.innerHTML = `
+                    <div class="card health-report border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <h5 class="card-title">${report.title}</h5>
+                                <span class="badge bg-light text-dark">${report.type}</span>
+                            </div>
+                            <p class="card-text">${report.summary}</p>
+                            <div class="mt-3">
+                                <small class="text-muted">Date: ${formatDate(report.date)}</small><br>
+                                <small class="text-muted">Dentist: ${report.dentist}</small>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <button class="btn btn-sm btn-outline-primary" onclick="viewReportDetails('${report.id}')">
+                                View Details
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary ms-2">
+                                <i class="fas fa-download me-1"></i> Download
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(col);
+            });
+        }
+
+        // Load profile data
+        function loadProfileData() {
+            document.getElementById('profile-name').value = samplePatientData.name;
+            document.getElementById('profile-dob').value = samplePatientData.dob;
+            document.getElementById('profile-email').value = samplePatientData.email;
+            document.getElementById('profile-phone').value = samplePatientData.phone;
+            document.getElementById('profile-address').value = samplePatientData.address;
+            document.getElementById('profile-emergency-contact').value = samplePatientData.emergencyContact;
+            document.getElementById('profile-blood-group').value = samplePatientData.bloodGroup;
+            document.getElementById('profile-allergies').value = samplePatientData.allergies;
+
+            // Update display elements
+            document.getElementById('profile-display-name').textContent = samplePatientData.name;
+            document.getElementById('profile-display-email').textContent = samplePatientData.email;
+            document.getElementById('profile-display-phone').textContent = samplePatientData.phone;
+        }
+
+        // Format date for display
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+        }
+
+        // View appointment details
+        function viewAppointmentDetails(appointmentId) {
+            const appointment = samplePatientData.appointments.find(a => a.id === appointmentId);
+            if (appointment) {
+                alert(`Appointment Details:\n\nDate: ${formatDate(appointment.date)}\nTime: ${appointment.time}\nService: ${appointment.service}\nDentist: ${appointment.dentist}\nStatus: ${appointment.status}\nNotes: ${appointment.notes}`);
+            }
+        }
+
+        // Cancel appointment
+        function cancelAppointment(appointmentId) {
+            if (confirm('Are you sure you want to cancel this appointment?')) {
+                // In a real application, this would update the backend
+                showNotification('Appointment cancelled successfully!', 'success');
+                // Reload appointments
+                loadAppointmentsData();
+            }
+        }
+
+        // View report details
+        function viewReportDetails(reportId) {
+            const report = samplePatientData.healthReports.find(r => r.id === reportId);
+            if (report) {
+                alert(`Health Report Details:\n\nTitle: ${report.title}\nDate: ${formatDate(report.date)}\nType: ${report.type}\nDentist: ${report.dentist}\n\nSummary: ${report.summary}\n\nDetails: ${report.details}`);
+            }
+        }
+
+        // Patient login
+        function loginPatient(email, password) {
+            // Simple validation for demo
+            if (email === samplePatientData.email && password === samplePatientData.password) {
+                // Set patient as logged in
+                localStorage.setItem('patientLoggedIn', 'true');
+                
+                // Update dashboard with patient data
+                document.getElementById('patient-name').textContent = samplePatientData.name;
+                document.getElementById('patient-id').textContent = samplePatientData.id;
+                document.getElementById('upcoming-appointments').textContent = 
+                    samplePatientData.appointments.filter(a => a.status === 'Scheduled').length;
+                document.getElementById('completed-treatments').textContent = 
+                    samplePatientData.appointments.filter(a => a.status === 'Completed').length;
+                document.getElementById('health-reports-count').textContent = samplePatientData.healthReports.length;
+                
+                // Load recent appointments
+                const recentAppointmentsList = document.getElementById('recent-appointments-list');
+                recentAppointmentsList.innerHTML = '';
+                
+                const recentAppointments = samplePatientData.appointments
+                    .sort((a, b) => new Date(b.date) - new Date(a.date))
+                    .slice(0, 3);
+                
+                recentAppointments.forEach(appointment => {
+                    const statusClass = `status-${appointment.status.toLowerCase()}`;
+                    const item = document.createElement('div');
+                    item.className = 'd-flex justify-content-between align-items-center border-bottom pb-2 mb-2';
+                    item.innerHTML = `
+                        <div>
+                            <h6 class="mb-0">${appointment.service}</h6>
+                            <small class="text-muted">${formatDate(appointment.date)} at ${appointment.time}</small>
+                        </div>
+                        <span class="status-badge ${statusClass}">${appointment.status}</span>
+                    `;
+                    recentAppointmentsList.appendChild(item);
+                });
+                
+                // Show patient dashboard
+                showPage('patient-dashboard');
+                
+                return true;
+            }
+            return false;
+        }
+
+        // Logout patient
+        function logoutPatient() {
+            localStorage.removeItem('patientLoggedIn');
+            showPage('home');
+            showNotification('You have been logged out successfully.', 'success');
         }
 
         // Animated counter for About section
@@ -1133,15 +1748,37 @@
         document.getElementById('patient-login-form').addEventListener('submit', function (e) {
             e.preventDefault();
 
-            // Simple validation for demo
             const email = document.getElementById('patient-email').value;
             const password = document.getElementById('patient-password').value;
 
-            if (email && password) {
-                showNotification('Login successful! Redirecting to patient portal...', 'success');
+            if (loginPatient(email, password)) {
+                showNotification('Login successful! Welcome to your patient portal.', 'success');
             } else {
-                showNotification('Please enter valid credentials.', 'error');
+                showNotification('Invalid email or password. Please try again.', 'error');
             }
+        });
+
+        // Patient profile form
+        document.getElementById('patient-profile-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Update sample patient data with form values
+            samplePatientData.name = document.getElementById('profile-name').value;
+            samplePatientData.dob = document.getElementById('profile-dob').value;
+            samplePatientData.email = document.getElementById('profile-email').value;
+            samplePatientData.phone = document.getElementById('profile-phone').value;
+            samplePatientData.address = document.getElementById('profile-address').value;
+            samplePatientData.emergencyContact = document.getElementById('profile-emergency-contact').value;
+            samplePatientData.bloodGroup = document.getElementById('profile-blood-group').value;
+            samplePatientData.allergies = document.getElementById('profile-allergies').value;
+
+            // Update display elements
+            document.getElementById('profile-display-name').textContent = samplePatientData.name;
+            document.getElementById('profile-display-email').textContent = samplePatientData.email;
+            document.getElementById('profile-display-phone').textContent = samplePatientData.phone;
+            document.getElementById('patient-name').textContent = samplePatientData.name;
+
+            showNotification('Profile updated successfully!', 'success');
         });
 
         // Admin login form - Redirect to separate admin page
@@ -1211,6 +1848,11 @@
         document.addEventListener('DOMContentLoaded', function () {
             // Load initial data
             saveData();
+
+            // Check if patient is already logged in
+            if (localStorage.getItem('patientLoggedIn') === 'true') {
+                loginPatient(samplePatientData.email, samplePatientData.password);
+            }
         });
     </script>
 </body>
